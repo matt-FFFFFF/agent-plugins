@@ -7,6 +7,9 @@ A roster of 10 Claude Code subagents and 13 skills adapted from [oh-my-openagent
 Nothing here requires either — every agent and skill degrades gracefully without them. But two tools meaningfully improve what this plugin can do, and a one-time `SessionStart` hook (`hooks/session-start.sh`) will mention whichever one is missing the first time you use this plugin, then stay silent:
 
 - **[CodeGraph](https://github.com/colbymchenry/codegraph)** — the `Explore` agent and the `init-deep`/`ulw-plan`/`refactor` skills all reach for the `codegraph_explore` MCP tool first when it's present, for faster and more accurate code navigation than grep/glob alone.
+  ```
+  curl -fsSL https://raw.githubusercontent.com/colbymchenry/codegraph/main/install.sh | sh
+  ```
 - **[caveman](https://github.com/JuliusBrussee/caveman)** — `ulw-research`, `ulw-plan`, and `init-deep` all fan work out to several subagents at once; caveman compresses that traffic before it lands back in your main context, which can cut token usage meaningfully on those workflows.
   ```
   npm install -g @caveman-ai/cli && caveman setup --install

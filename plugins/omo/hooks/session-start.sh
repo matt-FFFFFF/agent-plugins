@@ -23,7 +23,7 @@ if [[ " ${missing[*]} " == *" codegraph "* ]]; then
 omo tip: CodeGraph isn't installed. The Explore agent and the init-deep/ulw-plan/refactor
 skills all use the codegraph_explore MCP tool for faster, more accurate code navigation
 when it's present, and fall back to plain grep/glob without it.
-  -> https://github.com/colbymchenry/codegraph
+  -> curl -fsSL https://raw.githubusercontent.com/colbymchenry/codegraph/main/install.sh | sh
 EOF
 fi
 
