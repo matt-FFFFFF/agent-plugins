@@ -10,7 +10,7 @@ A Claude Code plugin marketplace. One plugin so far:
 
 ```
 claude plugin marketplace add matt-FFFFFF/agent-plugins
-claude plugin install omo@agent-plugins
+claude plugin install omo@matt-FFFFFF
 ```
 
 `claude plugin marketplace add` also accepts a full URL (`https://github.com/matt-FFFFFF/agent-plugins`) or a local path if you've cloned it — same install flow either way. To update after this repo changes: `claude plugin update omo`.

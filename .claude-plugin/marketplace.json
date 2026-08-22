@@ -1,6 +1,6 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
-  "name": "agent-plugins",
+  "name": "matt-FFFFFF",
   "description": "A single-plugin marketplace bundling a roster of Claude Code subagents and skills adapted from oh-my-openagent.",
   "owner": {
     "name": "Matt White"
