@@ -1,0 +1,17 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "agent-plugins",
+  "description": "A single-plugin marketplace bundling a roster of Claude Code subagents and skills adapted from oh-my-openagent.",
+  "owner": {
+    "name": "Matt White"
+  },
+  "plugins": [
+    {
+      "name": "omo",
+      "description": "10 subagents (sisyphus, atlas, hephaestus, prometheus, sisyphus-junior, explore, librarian, metis, momus, oracle) and 13 skills adapted for Claude Code from oh-my-openagent.",
+      "version": "0.1.0",
+      "source": "./plugins/omo",
+      "category": "development"
+    }
+  ]
+}
