@@ -1,0 +1,15 @@
+{
+  "description": "One-time SessionStart notice recommending CodeGraph and caveman if either is missing",
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/session-start.sh\""
+          }
+        ]
+      }
+    ]
+  }
+}
