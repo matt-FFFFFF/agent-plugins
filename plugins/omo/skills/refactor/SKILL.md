@@ -40,7 +40,7 @@ Then create todos with `TodoWrite` for all six phases below, and mark each `in_p
 
 ## Phase 1: Codebase Analysis (parallel exploration)
 
-Fire several `Agent({subagent_type: "explore", ...})` calls **in one message** so they run in parallel — one per angle:
+Fire several `Agent({subagent_type: "Explore", ...})` calls **in one message** so they run in parallel — one per angle:
 
 1. Find all occurrences and definitions of the target — file paths, line numbers, usage patterns.
 2. Find everything that imports, uses, or depends on the target — dependency chains, import graph.
@@ -54,7 +54,7 @@ Fire several `Agent({subagent_type: "explore", ...})` calls **in one message** s
 - Otherwise: `Grep`/`Glob` for text and structural patterns, and the `ast-grep` skill (`sg --pattern '...' --lang <lang>` or `python3 scripts/ast_grep_helper.py search`) for structural queries.
 - `Grep` for straightforward text patterns.
 
-Collect the `explore` agents' results as their notifications arrive, then merge everything into one picture.
+Collect the `Explore` agents' results as their notifications arrive, then merge everything into one picture.
 
 ---
 
@@ -92,7 +92,7 @@ From this, state explicit constraints: what MUST follow existing patterns, what 
 
 ## Phase 3: Test Assessment
 
-Detect the test infrastructure (`package.json` scripts, `pytest.ini`/`pyproject.toml`, `*_test.go`, etc.), then assess coverage for the target (which files cover it, what cases exist, integration tests, edge cases, a rough coverage estimate — an `explore` agent can do this directly).
+Detect the test infrastructure (`package.json` scripts, `pytest.ini`/`pyproject.toml`, `*_test.go`, etc.), then assess coverage for the target (which files cover it, what cases exist, integration tests, edge cases, a rough coverage estimate — an `Explore` agent can do this directly).
 
 | Coverage | Strategy |
 |---|---|
@@ -176,7 +176,7 @@ When a deprecated method/API surfaces during refactoring: fire the `librarian` a
 
 ## Agents this skill uses
 
-- `explore` — parallel codebase pattern discovery (Phase 1).
+- `Explore` — parallel codebase pattern discovery (Phase 1).
 - `Plan` — detailed refactoring plan generation (Phase 4).
 - `oracle` — read-only consultation for hard architectural calls or a stuck verification failure.
 - `librarian` — proactively, whenever a deprecated method or library migration comes up.

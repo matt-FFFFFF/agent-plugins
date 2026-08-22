@@ -1,6 +1,6 @@
 ---
 name: ulw-research
-description: "Maximum-saturation research: parallel explore+librarian swarms across codebase, web, and official docs, with a live journal, a recursive EXPAND loop that chases every lead a worker surfaces, empirical verification by running code, and a cited synthesis. ACTIVATES ONLY on an explicit user demand for research — the word 'ulw-research' in any form, 'mass ulw research', or an explicit request for deep/exhaustive research, in any language. Never self-activates for ordinary questions, debugging, or implementation context-gathering. While active it overrides exploration-bounding defaults: exhaustive coverage is the goal."
+description: "Maximum-saturation research: parallel Explore+librarian swarms across codebase, web, and official docs, with a live journal, a recursive EXPAND loop that chases every lead a worker surfaces, empirical verification by running code, and a cited synthesis. ACTIVATES ONLY on an explicit user demand for research — the word 'ulw-research' in any form, 'mass ulw research', or an explicit request for deep/exhaustive research, in any language. Never self-activates for ordinary questions, debugging, or implementation context-gathering. While active it overrides exploration-bounding defaults: exhaustive coverage is the goal."
 ---
 
 # ULW-Research — Maximum-Saturation Research
@@ -48,7 +48,7 @@ Launch the entire first wave in one message — every axis at once. Sequential l
 
 Scaling floor (more angles always justify more workers):
 
-| Query scope | explore | librarian | browsing | floor |
+| Query scope | Explore | librarian | browsing | floor |
 |---|---|---|---|---|
 | Single topic, codebase only | 3 | 0 | 0 | 3 |
 | Single topic, web only | 0 | 4 | 1 | 5 |
@@ -60,7 +60,7 @@ Scaling floor (more angles always justify more workers):
 
 Role protocols — embed the relevant one in each spawn's prompt, every worker gets a unique angle:
 
-- **Codebase** (`Agent({subagent_type: "explore", ...})`, 2-4 workers): grep with 3+ keyword variations, structural/AST search, `git log --all -S '<keyword>'` / `--grep` for history including deleted code, file-name globs. Cross-validate across tools. Report absolute paths, `file:line`, and how findings connect.
+- **Codebase** (`Agent({subagent_type: "Explore", ...})`, 2-4 workers): grep with 3+ keyword variations, structural/AST search, `git log --all -S '<keyword>'` / `--grep` for history including deleted code, file-name globs. Cross-validate across tools. Report absolute paths, `file:line`, and how findings connect.
 - **Web** (`Agent({subagent_type: "librarian", ...})`, 3-6 workers): ≥10 distinct search queries per worker, each with a different operator or angle (see Search craft below); fetch the full page for anything that matters — snippets lie. `gh search code|repos|issues` for real-world usage. Official docs via sitemap discovery.
 - **Browsing** (0-3 workers, via the `ultimate-browsing` skill for pages a plain fetch can't read — WAF, 403, Cloudflare, login-gated): escalate through its tiers rather than giving up on a blocked source.
 

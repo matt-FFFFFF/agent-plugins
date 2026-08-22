@@ -1,6 +1,6 @@
 ---
 name: init-deep
-description: "Generate a hierarchical AGENTS.md knowledge base — a root file plus complexity-scored subdirectory files, built from parallel explore-agent research and CodeGraph when available. More thorough than a single root AGENTS.md: each subdirectory earns its own file only if it scores as complex/distinct enough, and children never repeat what the parent already says. Triggers: init-deep, deep init, hierarchical AGENTS.md, per-directory knowledge base, generate AGENTS.md for every module."
+description: "Generate a hierarchical AGENTS.md knowledge base — a root file plus complexity-scored subdirectory files, built from parallel Explore-agent research and CodeGraph when available. More thorough than a single root AGENTS.md: each subdirectory earns its own file only if it scores as complex/distinct enough, and children never repeat what the parent already says. Triggers: init-deep, deep init, hierarchical AGENTS.md, per-directory knowledge base, generate AGENTS.md for every module."
 ---
 
 # init-deep
@@ -15,7 +15,7 @@ Generate hierarchical `AGENTS.md` files: root + complexity-scored subdirectories
 
 ## Workflow (high level)
 
-1. **Discovery + Analysis** (concurrent) — fire parallel `explore` agents immediately; meanwhile do bash structural analysis + CodeGraph/grep code mapping + read existing `AGENTS.md` files yourself.
+1. **Discovery + Analysis** (concurrent) — fire parallel `Explore` agents immediately; meanwhile do bash structural analysis + CodeGraph/grep code mapping + read existing `AGENTS.md` files yourself.
 2. **Score & Decide** — determine which directories earn their own `AGENTS.md` from the merged findings.
 3. **Generate** — root first (full treatment), then subdirectories.
 4. **Review** — deduplicate against parents, trim to size limits, verify telegraphic style.
@@ -26,9 +26,9 @@ Track all four phases with `TodoWrite`, marking each `in_progress` → `complete
 
 ## Phase 1: Discovery + Analysis (concurrent)
 
-### Fire explore agents immediately
+### Fire Explore agents immediately
 
-Don't wait for them — they run while you do the rest of this phase yourself. Fire these via the `Agent` tool (`subagent_type: "explore"`), all in one message so they run in parallel:
+Don't wait for them — they run while you do the rest of this phase yourself. Fire these via the `Agent` tool (`subagent_type: "Explore"`), all in one message so they run in parallel:
 
 - **Structure**: map the real layout, report deviations from standard patterns for this stack.
 - **Entry points**: find main files, trace what they reach, report non-standard organization.
@@ -37,7 +37,7 @@ Don't wait for them — they run while you do the rest of this phase yourself. F
 - **Build/CI**: find `.github/workflows`, `Makefile`, etc., report non-standard patterns.
 - **Test patterns**: find test configs/structure, report unique conventions.
 
-**Scale up for large projects** — after the bash structural pass below, fire additional `explore` agents based on project size:
+**Scale up for large projects** — after the bash structural pass below, fire additional `Explore` agents based on project size:
 
 | Factor | Threshold | Additional agents |
 |---|---|---|
@@ -67,9 +67,9 @@ find . -type f \( -name "AGENTS.md" -o -name "CLAUDE.md" \) -not -path '*/node_m
 
 **Read existing `AGENTS.md` files found** (and any legacy `CLAUDE.md` — fold its content in, since `AGENTS.md` is now the target) — extract key insights, conventions, anti-patterns into a running map. If `--create-new`: read all existing first (preserve the context), then remove them, then regenerate.
 
-**Code map — CodeGraph first when present:** if the repo has a `.codegraph/` directory, use `codegraph_explore` (and `codegraph_search`/`codegraph_callers`/`codegraph_callees`/`codegraph_impact`/`codegraph_files` for targeted queries) for an overview, symbol inventory, and reference centrality — this feeds the scoring matrix below. If CodeGraph isn't available, fall back to the `explore` agents' findings plus `Grep`/`Glob` and the `ast-grep` skill (if installed), and mark centrality as unmeasured.
+**Code map — CodeGraph first when present:** if the repo has a `.codegraph/` directory, use `codegraph_explore` (and `codegraph_search`/`codegraph_callers`/`codegraph_callees`/`codegraph_impact`/`codegraph_files` for targeted queries) for an overview, symbol inventory, and reference centrality — this feeds the scoring matrix below. If CodeGraph isn't available, fall back to the `Explore` agents' findings plus `Grep`/`Glob` and the `ast-grep` skill (if installed), and mark centrality as unmeasured.
 
-**Collect the explore agents' results** as their notifications arrive, then merge: bash findings + code map + existing files + explore findings. Mark discovery `completed`.
+**Collect the Explore agents' results** as their notifications arrive, then merge: bash findings + code map + existing files + Explore findings. Mark discovery `completed`.
 
 ---
 
@@ -80,7 +80,7 @@ find . -type f \( -name "AGENTS.md" -o -name "CLAUDE.md" \) -not -path '*/node_m
 | File count | 3x | >20 | bash |
 | Subdir count | 2x | >5 | bash |
 | Code ratio | 2x | >70% | bash |
-| Unique patterns | 1x | has own config | explore |
+| Unique patterns | 1x | has own config | Explore |
 | Module boundary | 2x | has `index.ts`/`__init__.py` | bash |
 | Symbol density | 2x | >30 symbols | CodeGraph |
 | Export count | 2x | >10 exports | CodeGraph |
@@ -123,7 +123,7 @@ Produce a location list, e.g.: `[{path: ".", type: "root"}, {path: "src/hooks", 
 |------|----------|-------|
 
 ## CODE MAP
-{from CodeGraph/explore findings — skip only if neither exists or the project is <10 files}
+{from CodeGraph/Explore findings — skip only if neither exists or the project is <10 files}
 
 | Symbol | Type | Location | Refs | Role |
 |--------|------|----------|------|------|
@@ -186,8 +186,8 @@ Hierarchy:
 
 ## Anti-Patterns
 
-- **Static agent count**: vary the number of `explore` agents fired with project size/depth.
-- **Sequential execution**: run explore agents + CodeGraph + bash analysis concurrently, not one after another.
+- **Static agent count**: vary the number of `Explore` agents fired with project size/depth.
+- **Sequential execution**: run Explore agents + CodeGraph + bash analysis concurrently, not one after another.
 - **Ignoring existing files**: always read existing `AGENTS.md` first, even with `--create-new`.
 - **Over-documenting**: not every directory needs its own `AGENTS.md` — that's what the scoring matrix is for.
 - **Redundancy**: a child file never repeats what its parent already says.

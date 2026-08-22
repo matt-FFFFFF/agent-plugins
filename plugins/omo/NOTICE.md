@@ -6,7 +6,7 @@ oh-my-openagent is a multi-agent framework built on top of OpenCode, with its ow
 
 ## Agents (`agents/`)
 
-All 10 agents are adapted from oh-my-openagent agent personas of the same name (`explore`, `librarian`, `metis`, `momus`, `oracle`, `sisyphus`, `sisyphus-junior`, `atlas`, `hephaestus`, `prometheus`). Source: `packages/senpi-task/src/agents/builtin/` and `packages/omo-opencode/src/agents/` in the oh-my-openagent repository.
+All 10 agents are adapted from oh-my-openagent agent personas of the same name (`explore`, `librarian`, `metis`, `momus`, `oracle`, `sisyphus`, `sisyphus-junior`, `atlas`, `hephaestus`, `prometheus`). Source: `packages/senpi-task/src/agents/builtin/` and `packages/omo-opencode/src/agents/` in the oh-my-openagent repository. `explore` is registered here as `Explore` (capital E) deliberately, to match and override Claude Code's built-in agent of the same name — see `agents/explore.md`'s `name:` field and the `README.md` note on it.
 
 ## Skills (`skills/`)
 

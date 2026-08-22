@@ -6,7 +6,7 @@ A roster of 10 Claude Code subagents and 13 skills adapted from [oh-my-openagent
 
 | Agent | Model | Role |
 |---|---|---|
-| `explore` | haiku | Fast contextual grep for codebases |
+| `Explore` | haiku | Fast contextual grep for codebases (overrides Claude Code's built-in `Explore`) |
 | `librarian` | haiku | External docs / OSS research, GitHub-permalink evidence |
 | `metis` | opus | Pre-planning consultant — surfaces hidden intent, ambiguity, AI-slop risk |
 | `momus` | opus | Practical plan reviewer — approves by default, blocks only on real gaps |
@@ -22,7 +22,7 @@ None of these delegate to each other — each is self-contained, since Claude Co
 ## Skills (`skills/`)
 
 - **Portable, close to verbatim**: `ast-grep`, `frontend`, `coding-agent-sessions`, `debugging`, `ultimate-browsing`, `data-scientist`, `git-master`, `programming`.
-- **Adapted with real delegation**: `init-deep` (hierarchical `AGENTS.md` generation via parallel `explore` agents + CodeGraph), `ulw-plan` (Prometheus-style planning that delegates to `explore`/`librarian`/`metis`/`momus`/`oracle`), `refactor` (codemap-driven refactor via `explore` + the `Plan` agent), `remove-ai-slops` (10-category AI-slop cleanup via `sisyphus-junior`), `ulw-research` (maximum-saturation research swarm with an EXPAND lead-chasing loop and verify-by-running-code).
+- **Adapted with real delegation**: `init-deep` (hierarchical `AGENTS.md` generation via parallel `Explore` agents + CodeGraph), `ulw-plan` (Prometheus-style planning that delegates to `Explore`/`librarian`/`metis`/`momus`/`oracle`), `refactor` (codemap-driven refactor via `Explore` + the `Plan` agent), `remove-ai-slops` (10-category AI-slop cleanup via `sisyphus-junior`), `ulw-research` (maximum-saturation research swarm with an EXPAND lead-chasing loop and verify-by-running-code).
 
 ## Why these exist
 
@@ -41,7 +41,7 @@ oh-my-openagent is its own multi-agent coding framework (built on OpenCode) with
 
 **Reach for an agent directly when you want to delegate a whole unit of work out of your current context**, not just load methodology into it. Rule of thumb, cheapest-fitting first:
 
-1. **Just need to find something** (a file, a symbol, "where is X handled") → `explore`. It's on haiku — fire several in parallel, they're cheap.
+1. **Just need to find something** (a file, a symbol, "where is X handled") → `Explore`. It's on haiku — fire several in parallel, they're cheap.
 2. **Need external/library research** (docs, GitHub examples, "how does library Y actually behave") → `librarian`.
 3. **Have a bounded, well-scoped task** ("fix this one function", "add this one endpoint") → `sisyphus-junior`. It executes, verifies once, and stops — don't reach for something heavier.
 4. **Have an existing plan/checklist file to execute start-to-finish** → `atlas`. It won't stop to ask between items.
@@ -52,4 +52,4 @@ oh-my-openagent is its own multi-agent coding framework (built on OpenCode) with
 
 **A typical end-to-end flow**: `ulw-plan` (or the `prometheus` agent directly, if you want it isolated from your main conversation) → `atlas` or `sisyphus` executes the resulting plan → `remove-ai-slops` on the branch before opening a PR. For a single hard problem instead of a multi-step plan, skip straight to `hephaestus`.
 
-**Cost awareness**: `explore`/`librarian` are on `haiku` — cheap, use them liberally for research. `sisyphus-junior`/`atlas` are on `sonnet`. Everything else (`metis`, `momus`, `oracle`, `prometheus`, `hephaestus`, `sisyphus`) is on `opus` — reach for those when the task actually warrants deep reasoning, not for routine work `sisyphus-junior` or a portable skill would handle just as well.
+**Cost awareness**: `Explore`/`librarian` are on `haiku` — cheap, use them liberally for research. `sisyphus-junior`/`atlas` are on `sonnet`. Everything else (`metis`, `momus`, `oracle`, `prometheus`, `hephaestus`, `sisyphus`) is on `opus` — reach for those when the task actually warrants deep reasoning, not for routine work `sisyphus-junior` or a portable skill would handle just as well.
