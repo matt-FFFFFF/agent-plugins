@@ -1,8 +1,8 @@
 # License
 
-The content in this repository (the agent personas under `plugins/omo/agents/` and most skills under `plugins/omo/skills/`) is a derivative work of [oh-my-openagent](https://github.com/code-yeongyu/oh-my-openagent) by YeonGyu-Kim, adapted for Claude Code. See `NOTICE.md` for what was changed and which parts carry their own separate licenses.
+The content in this plugin (the agent personas under `agents/` and most skills under `skills/`) is a derivative work of [oh-my-openagent](https://github.com/code-yeongyu/oh-my-openagent) by YeonGyu-Kim, adapted for Claude Code. See `NOTICE.md` for what was changed and which parts carry their own separate licenses.
 
-Per the terms below, this repository is licensed under the **Sustainable Use License, Version 1.0** — the same license oh-my-openagent uses for this content. In particular: **you may distribute or modify this repository only free of charge, for non-commercial purposes, and you may not remove or obscure this notice.**
+Per the terms below, this plugin is licensed under the **Sustainable Use License, Version 1.0** — the same license oh-my-openagent uses for this content. In particular: **you may distribute or modify this plugin only free of charge, for non-commercial purposes, and you may not remove or obscure this notice.**
 
 ---
 

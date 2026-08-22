@@ -1,14 +1,14 @@
 # Notice
 
-**This software has been modified from its original source.** Everything in `plugins/omo/agents/` and most of `plugins/omo/skills/` originates from [oh-my-openagent](https://github.com/code-yeongyu/oh-my-openagent) (npm: `oh-my-opencode`), copyright YeonGyu-Kim, licensed under the Sustainable Use License v1.0 (full text in `LICENSE.md`).
+**This software has been modified from its original source.** Everything in `agents/` and most of `skills/` in this plugin originates from [oh-my-openagent](https://github.com/code-yeongyu/oh-my-openagent) (npm: `oh-my-opencode`), copyright YeonGyu-Kim, licensed under the Sustainable Use License v1.0 (full text in `LICENSE.md`, alongside this file).
 
 oh-my-openagent is a multi-agent framework built on top of OpenCode, with its own delegation system (`task()`/categories), state directories (`.omo/`), and tool surface (`lsp_*`, `team_*`, etc.) that don't exist in Claude Code. Every file in this repository was rewritten, not copied verbatim, to strip that framework-specific machinery and adapt the surviving content — prompts, methodology, category tables, decision frameworks — into standalone Claude Code subagents (`.md` files with tool/model frontmatter) and skills (`SKILL.md`). Some files (e.g. `sisyphus.md`, `atlas.md`, `hephaestus.md`) are substantial rewrites; others (e.g. `metis.md`, `momus.md`) are close ports since the source was already adapted for standalone, non-delegating use.
 
-## Agents (`plugins/omo/agents/`)
+## Agents (`agents/`)
 
 All 10 agents are adapted from oh-my-openagent agent personas of the same name (`explore`, `librarian`, `metis`, `momus`, `oracle`, `sisyphus`, `sisyphus-junior`, `atlas`, `hephaestus`, `prometheus`). Source: `packages/senpi-task/src/agents/builtin/` and `packages/omo-opencode/src/agents/` in the oh-my-openagent repository.
 
-## Skills (`plugins/omo/skills/`)
+## Skills (`skills/`)
 
 Source: `packages/shared-skills/skills/` in the oh-my-openagent repository (its general-purpose skill library, distinct from the skills it uses to maintain its own repo).
 
@@ -22,10 +22,10 @@ The rest (`coding-agent-sessions`, `debugging`, `data-scientist`, `git-master`, 
 
 Four skills (`init-deep`, `ulw-plan`, `refactor`, `remove-ai-slops`, `ulw-research`) were substantially rewritten: framework-specific state (`.omo/` directories, a `scaffold-plan.mjs` script dependency, a bespoke cryptographic review-round state machine, a 5-file "epistemic instrumentation" ledger system, team-mode coordination) was removed and replaced with plain Claude Code mechanics (the `Agent` tool for delegation, `TodoWrite`, `AGENTS.md`/plain markdown files instead of `.omo/`).
 
-## What this repository adds
+## What this plugin adds
 
-The plugin/marketplace packaging (`.claude-plugin/*.json`), this file, and `LICENSE.md` are original to this repository.
+The plugin packaging (`.claude-plugin/plugin.json`), this file, and `LICENSE.md` are original to this plugin. The marketplace packaging one level up (`.claude-plugin/marketplace.json`) is original to the `agent-plugins` repository.
 
 ## Full upstream license
 
-See `LICENSE.md` for the complete Sustainable Use License v1.0 text that governs this repository, matching the license oh-my-openagent uses for this content.
+See `LICENSE.md` for the complete Sustainable Use License v1.0 text that governs this plugin, matching the license oh-my-openagent uses for this content.
