@@ -176,4 +176,4 @@ python3 -m engine URL [--selector S] [--device auto|desktop|mobile]
 - `summary.py` emits an **R7 API-first hint** after >=3 challenge verdicts against a known WAF profile: look for `/api/`, `/graphql`, or `.json` endpoints, which usually carry weaker WAF protection than the HTML surface.
 - `templates/` holds the Playwright JS templates (`playwright_real_chrome.js`, `playwright_mobile_chrome.js`) the executor drives.
 - `url_transforms.py` transforms stay domain-agnostic (`mobile_subdomain`, `am_prefix`, `drop_www`).
-- Parent: [`packages/shared-skills/AGENTS.md`](../../../AGENTS.md).
+- Parent: [`../AGENTS.md`](../AGENTS.md) (ultimate-browsing skill root).

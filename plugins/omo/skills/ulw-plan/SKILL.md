@@ -63,20 +63,21 @@ If "should I start now?" would be your only remaining question, you defaulted fo
 ## Phase 3 — Generate the plan (only after approval)
 
 1. **`metis` gap analysis (mandatory, even on the CLEAR path)**: spawn `Agent({subagent_type: "metis", ...})` against the drafted plan for contradictions, missing constraints (including unstated extrinsic ones), scope creep, unvalidated assumptions, and missing acceptance criteria. Fold findings in silently — each constraint gap becomes either a proposed default plus reversibility note, or a single owner-question when defaulting is unsafe.
-2. Write the plan using this template (headers verbatim, in this order):
-   ```
-   # <slug> - Work Plan
-   ## TL;DR (For humans)
-   (What you'll get / Why this approach / What it will NOT do / Effort / Risk / Decisions I made for you)
-   ## Scope
-   ## Verification strategy
-   ## Execution strategy
-   ## Todos
-   ## Final verification wave
-   ## Commit strategy
-   ## Success criteria
-   ```
-   Write to the path the user gave you, or `plans/<slug>.md` if there are (or will be) multiple plans in this repo, or `PLAN.md` at the repo root for a single one-off plan.
+2. Decide the target path: the path the user gave you, or `plans/<slug>.md` if there are (or will be) multiple plans in this repo, or `PLAN.md` at the repo root for a single one-off plan. Then scaffold the skeleton (headers verbatim, in this order):
+   - **Node or Bun available**: `node scripts/scaffold-plan.mjs <slug> --output <path>` (or `bun scripts/scaffold-plan.mjs ...`). Idempotent — re-running on an existing plan is a safe no-op, so resuming after a compaction can't clobber checked-off todos. Pass `--reset` to force a fresh skeleton, `--reset --force` if you're deliberately discarding hand edits.
+   - **Neither available**: write it yourself, verbatim:
+     ```
+     # <slug> - Work Plan
+     ## TL;DR (For humans)
+     (What you'll get / Why this approach / What it will NOT do / Effort / Risk / Decisions I made for you)
+     ## Scope
+     ## Verification strategy
+     ## Execution strategy
+     ## Todos
+     ## Final verification wave
+     ## Commit strategy
+     ## Success criteria
+     ```
 3. Encode every executable item as a plain checklist row: `- [ ] N. <title>` for implementation items, `- [ ] F<n>. <title>` for final-verification items. Target 5-8 todos per logical wave; fewer than 3 (except the final wave) usually means under-splitting, but never force-split work that shares one insight — keep it as one todo rather than severing shared reasoning. Each todo carries: exhaustive references (the executor has no interview context), agent-executable acceptance criteria, and happy + failure QA scenarios each with an evidence path (specific tool, concrete steps, exact expected result — never "verify it works" or "user manually tests"). Fill `## TL;DR (For humans)` LAST, after the detailed plan, so it summarizes the real plan.
 4. **Final verification wave** (after all todos, runs in parallel, ALL must pass): plan-compliance audit, code-quality review, real manual QA, scope fidelity.
 5. Self-review before delivery: every todo has references + acceptance + QA; no business-logic assumption without evidence; every checklist row is column-zero and matches the grammar above (no prose heading or bullet masquerading as a task); the first `## ` heading is `## TL;DR (For humans)`.
