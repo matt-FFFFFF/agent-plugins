@@ -1,7 +1,7 @@
 {
   "name": "omo",
   "description": "9 subagents (sisyphus, sisyphus-junior, hephaestus, prometheus, explore, librarian, metis, momus, oracle) and 14 skills (ast-grep, frontend, coding-agent-sessions, debugging, ultimate-browsing, data-scientist, git-master, programming, init-deep, ulw-plan, refactor, remove-ai-slops, ulw-research, start-work) adapted for Claude Code from oh-my-openagent.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": {
     "name": "Matt White"
   },
