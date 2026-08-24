@@ -14,8 +14,8 @@
 //
 // Usage:  node scripts/scaffold-plan.mjs <slug> [--output <path>] [--reset [--force]]
 //   <slug>            lowercase-hyphen id, e.g. "add-dark-mode"
-//   --output <path>   target file, must end in .md (default: plans/<slug>.md). Use
-//                      "PLAN.md" for a single one-off plan, or the path the user asked for.
+//   --output <path>   target file, must end in .md (default: .claude/plans/<slug>.md).
+//                      Pass this only when the user asked for a specific path.
 //   --reset           overwrite an existing file instead of no-op'ing
 //   --force           required alongside --reset if the existing file's content differs
 //                      from a fresh skeleton (protects a hand-edited, in-progress plan)
@@ -50,7 +50,7 @@ export const FINAL_VERIFICATION_ITEMS = [
 const SECTION_BODIES = {
 	"## TL;DR (For humans)": `<!-- Fill this LAST, after the detailed plan below is written, so it summarizes the REAL plan. -->
 (What you'll get / Why this approach / What it will NOT do / Effort / Risk / Decisions I made for you)`,
-	"## Todos": `<!-- Encode each item as "- [ ] N. <title>" (implementation) or "- [ ] F<n>. <title>" (final verification). -->`,
+	"## Todos": `<!-- Encode each item as "- [ ] N. <title>" (implementation) or "- [ ] F<n>. <title>" (final verification). Each implementation item also carries an "Agent: sisyphus|sisyphus-junior" line. -->`,
 	"## Final verification wave": `> Runs in parallel after ALL todos. ALL must pass.
 ${FINAL_VERIFICATION_ITEMS.map((item) => `- [ ] ${item}`).join("\n")}`,
 };
@@ -79,13 +79,13 @@ export function parseArgs(argv) {
 		throw new Error(`invalid slug "${slug}" - use lowercase letters, digits, and hyphens only`);
 	}
 	if (force && !reset) throw new Error("--force only makes sense together with --reset");
-	return { slug, output: output ?? join("plans", `${slug}.md`), reset, force };
+	return { slug, output: output ?? join(".claude", "plans", `${slug}.md`), reset, force };
 }
 
 // Resolve a target path and confine it under the workspace root. Unlike the upstream
 // .omo/-only version this was ported from, there's no single fixed subdirectory to
 // confine to - this skill writes wherever SKILL.md's Phase 3 routing decided
-// (plans/<slug>.md, PLAN.md, or a user-given path) - so the guard is "stay inside the
+// (.claude/plans/<slug>.md by default, or a user-given path) - so the guard is "stay inside the
 // repo, .md only, no symlink tricks" rather than one hard-coded directory.
 export function resolveSafeRepoPath(cwd, relPath) {
 	const resolved = resolve(cwd, relPath);

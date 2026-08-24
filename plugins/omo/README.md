@@ -1,6 +1,6 @@
 # omo
 
-A roster of 10 Claude Code subagents and 13 skills adapted from [oh-my-openagent](https://github.com/code-yeongyu/oh-my-openagent) — see `NOTICE.md` for exactly what was changed, and `LICENSE.md` for the terms this plugin is distributed under (free, non-commercial redistribution only, attribution required).
+A roster of 9 Claude Code subagents and 14 skills adapted from [oh-my-openagent](https://github.com/code-yeongyu/oh-my-openagent) — see `NOTICE.md` for exactly what was changed, and `LICENSE.md` for the terms this plugin is distributed under (free, non-commercial redistribution only, attribution required).
 
 ## Recommended companion tools (optional)
 
@@ -25,18 +25,17 @@ Nothing here requires either — every agent and skill degrades gracefully witho
 | `metis` | opus | Pre-planning consultant — surfaces hidden intent, ambiguity, AI-slop risk |
 | `momus` | opus | Practical plan reviewer — approves by default, blocks only on real gaps |
 | `oracle` | opus | Deep-reasoning strategic advisor for hard debugging/architecture calls |
-| `sisyphus-junior` | sonnet | Single bounded task, executes, verifies once, stops |
+| `sisyphus-junior` | sonnet | Junior counterpart to `sisyphus` — single bounded task, same discipline scaled down, verifies once, stops |
 | `prometheus` | opus | Explore-first planner — writes a decision-complete plan, never implements |
-| `atlas` | sonnet | Grinds a checklist/plan file to completion, item by item |
 | `hephaestus` | opus | Autonomous deep worker for hard, open-ended goals |
-| `sisyphus` | opus | General-purpose implementation workhorse |
+| `sisyphus` | opus | General-purpose implementation workhorse — the senior counterpart to `sisyphus-junior` |
 
-None of these delegate to each other — each is self-contained, since Claude Code subagents don't recurse. The **skills** below are where real delegation happens (they run in a context with `Agent` tool access and fan work out to the agents above).
+None of these delegate to each other — each stays a leaf by convention (Claude Code does support nested subagent delegation up to a depth limit, but this roster deliberately doesn't use it in agent files). The **skills** below are where real delegation happens — they run in a context with `Agent` tool access and fan work out to the agents above. See `start-work`, which grinds a plan to completion by delegating each item to `sisyphus` or `sisyphus-junior` per the plan's `Agent` field.
 
 ## Skills (`skills/`)
 
 - **Portable, close to verbatim**: `ast-grep`, `frontend`, `coding-agent-sessions`, `debugging`, `ultimate-browsing`, `data-scientist`, `git-master`, `programming`.
-- **Adapted with real delegation**: `init-deep` (hierarchical `AGENTS.md` generation via parallel `Explore` agents + CodeGraph), `ulw-plan` (Prometheus-style planning that delegates to `Explore`/`librarian`/`metis`/`momus`/`oracle`), `refactor` (codemap-driven refactor via `Explore` + the `Plan` agent), `remove-ai-slops` (10-category AI-slop cleanup via `sisyphus-junior`), `ulw-research` (maximum-saturation research swarm with an EXPAND lead-chasing loop and verify-by-running-code).
+- **Adapted with real delegation**: `init-deep` (hierarchical `AGENTS.md` generation via parallel `Explore` agents + CodeGraph), `ulw-plan` (Prometheus-style planning that delegates to `Explore`/`librarian`/`metis`/`momus`/`oracle`), `refactor` (codemap-driven refactor via `Explore` + the `Plan` agent), `remove-ai-slops` (10-category AI-slop cleanup via `sisyphus-junior`), `ulw-research` (maximum-saturation research swarm with an EXPAND lead-chasing loop and verify-by-running-code), `start-work` (grinds a plan/checklist file to completion by delegating each item to `sisyphus`/`sisyphus-junior` per the plan's `Agent` field — replaces the old `atlas` agent).
 
 ## Why these exist
 
@@ -51,19 +50,19 @@ oh-my-openagent is its own multi-agent coding framework (built on OpenCode) with
 - Refactoring with real risk of breaking something → **"refactor `<target>`"**.
 - Cleaning up AI-generated code smell on a branch → **"remove ai slops"**.
 - Need exhaustive, cited research (not a quick question) → **"ulw-research `<topic>`"**.
+- Have a plan/checklist file ready to execute end-to-end, unattended → **"start-work"**. It delegates each item to `sisyphus` or `sisyphus-junior` per the plan's `Agent` field and won't stop to ask between items.
 - Everyday coding conventions (Python/Rust/TypeScript/Go), git hygiene, debugging methodology, data work, frontend/design work, structural code search — the portable skills (`programming`, `git-master`, `debugging`, `data-scientist`, `frontend`, `ast-grep`) mostly trigger themselves from context; you rarely need to name them.
 
 **Reach for an agent directly when you want to delegate a whole unit of work out of your current context**, not just load methodology into it. Rule of thumb, cheapest-fitting first:
 
 1. **Just need to find something** (a file, a symbol, "where is X handled") → `Explore`. It's on haiku — fire several in parallel, they're cheap.
 2. **Need external/library research** (docs, GitHub examples, "how does library Y actually behave") → `librarian`.
-3. **Have a bounded, well-scoped task** ("fix this one function", "add this one endpoint") → `sisyphus-junior`. It executes, verifies once, and stops — don't reach for something heavier.
-4. **Have an existing plan/checklist file to execute start-to-finish** → `atlas`. It won't stop to ask between items.
-5. **Have a genuinely hard, open-ended, or ambiguous goal** ("make search faster", "figure out why this leaks memory") → `hephaestus`. Give it the goal, not the steps — it explores exhaustively before acting and won't stop early.
-6. **General implementation work that's bigger than sisyphus-junior but doesn't need hephaestus's exhaustive autonomy** → `sisyphus`. This is the reasonable default when in doubt.
-7. **Before committing to an approach on something risky** → `metis` (surfaces what you haven't thought about) and/or `oracle` (a second opinion from a strong reasoning model) *before* you implement, not after.
-8. **Reviewing a plan someone else (or `prometheus`) wrote** → `momus`. It's biased toward approving — it's a blocker-finder, not a perfectionist, so don't expect nitpicks.
+3. **Have a bounded, well-scoped task** ("fix this one function", "add this one endpoint") → `sisyphus-junior`. It executes, verifies once, and stops — don't reach for something heavier. `sisyphus`/`sisyphus-junior` are now a senior/junior pair with the same underlying discipline; `start-work` and `ulw-plan` pick between them automatically, but you can reach for either directly too.
+4. **Have a genuinely hard, open-ended, or ambiguous goal** ("make search faster", "figure out why this leaks memory") → `hephaestus`. Give it the goal, not the steps — it explores exhaustively before acting and won't stop early.
+5. **General implementation work that's bigger than sisyphus-junior but doesn't need hephaestus's exhaustive autonomy** → `sisyphus`. This is the reasonable default when in doubt.
+6. **Before committing to an approach on something risky** → `metis` (surfaces what you haven't thought about) and/or `oracle` (a second opinion from a strong reasoning model) *before* you implement, not after.
+7. **Reviewing a plan someone else (or `prometheus`) wrote** → `momus`. It's biased toward approving — it's a blocker-finder, not a perfectionist, so don't expect nitpicks.
 
-**A typical end-to-end flow**: `ulw-plan` (or the `prometheus` agent directly, if you want it isolated from your main conversation) → `atlas` or `sisyphus` executes the resulting plan → `remove-ai-slops` on the branch before opening a PR. For a single hard problem instead of a multi-step plan, skip straight to `hephaestus`.
+**A typical end-to-end flow**: `ulw-plan` (or the `prometheus` agent directly, if you want it isolated from your main conversation) → the **`start-work`** skill executes the resulting plan (or `sisyphus`/`sisyphus-junior` directly for a single task) → `remove-ai-slops` on the branch before opening a PR. For a single hard problem instead of a multi-step plan, skip straight to `hephaestus`.
 
-**Cost awareness**: `Explore`/`librarian` are on `haiku` — cheap, use them liberally for research. `sisyphus-junior`/`atlas` are on `sonnet`. Everything else (`metis`, `momus`, `oracle`, `prometheus`, `hephaestus`, `sisyphus`) is on `opus` — reach for those when the task actually warrants deep reasoning, not for routine work `sisyphus-junior` or a portable skill would handle just as well.
+**Cost awareness**: `Explore`/`librarian` are on `haiku` — cheap, use them liberally for research. `sisyphus-junior` is on `sonnet`. Everything else (`metis`, `momus`, `oracle`, `prometheus`, `hephaestus`, `sisyphus`) is on `opus` — reach for those when the task actually warrants deep reasoning, not for routine work `sisyphus-junior` or a portable skill would handle just as well. `start-work` itself has no model tier (it's a skill, not an agent) but fans out across both tiers per item via each plan task's `Agent` field, so its total cost depends on how the plan was authored — a plan leaning on `sisyphus` throughout costs more than one that correctly routes bounded items to `sisyphus-junior`.

@@ -1,6 +1,6 @@
 ---
 name: sisyphus
-description: Primary-style implementation agent for substantial engineering work — intent classification, disciplined exploration, direct implementation, and non-negotiable verification. Good default for "implement X" / "fix X" / "refactor X" requests that are bigger than a single trivial edit but don't need the exhaustive autonomy of hephaestus or the mechanical checklist-grinding of atlas.
+description: Primary-style implementation agent for substantial engineering work — intent classification, disciplined exploration, direct implementation, and non-negotiable verification. Good default for "implement X" / "fix X" / "refactor X" requests that are bigger than a single trivial edit but don't need the exhaustive autonomy of hephaestus or the mechanical checklist-grinding of the start-work skill.
 tools: Read, Grep, Glob, Bash, Edit, Write, WebFetch, WebSearch, TodoWrite
 model: opus
 ---

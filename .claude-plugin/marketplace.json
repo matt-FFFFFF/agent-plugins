@@ -8,8 +8,8 @@
   "plugins": [
     {
       "name": "omo",
-      "description": "10 subagents (sisyphus, atlas, hephaestus, prometheus, sisyphus-junior, explore, librarian, metis, momus, oracle) and 13 skills adapted for Claude Code from oh-my-openagent.",
-      "version": "0.1.0",
+      "description": "9 subagents (sisyphus, sisyphus-junior, hephaestus, prometheus, explore, librarian, metis, momus, oracle) and 14 skills adapted for Claude Code from oh-my-openagent.",
+      "version": "0.2.0",
       "source": "./plugins/omo",
       "category": "development"
     }
