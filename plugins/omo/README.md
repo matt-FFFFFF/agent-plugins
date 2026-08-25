@@ -4,7 +4,7 @@ A roster of 9 Claude Code subagents and 14 skills adapted from [oh-my-openagent]
 
 ## Recommended companion tools (optional)
 
-Nothing here requires either — every agent and skill degrades gracefully without them. But two tools meaningfully improve what this plugin can do, and a one-time `SessionStart` hook (`hooks/session-start.sh`) will mention whichever one is missing the first time you use this plugin, then stay silent:
+Nothing here requires any of them — every agent, skill, and hook degrades gracefully without them. But three tools meaningfully improve what this plugin can do, and a one-time `SessionStart` hook (`hooks/session-start.sh`) will mention whichever ones are missing the first time you use this plugin, then stay silent:
 
 - **[CodeGraph](https://github.com/colbymchenry/codegraph)** — the `Explore` agent and the `init-deep`/`ulw-plan`/`refactor` skills all reach for the `codegraph_explore` MCP tool first when it's present, for faster and more accurate code navigation than grep/glob alone.
   ```
@@ -14,6 +14,10 @@ Nothing here requires either — every agent and skill degrades gracefully witho
   ```
   npm install -g @caveman-ai/cli && caveman setup --install
   npx skills add JuliusBrussee/caveman
+  ```
+- **[comment-checker](https://github.com/code-yeongyu/go-claude-code-comment-checker)** — a `PostToolUse` hook (`hooks/comment-checker.sh`) pipes every `Write`/`Edit`/`MultiEdit` through it to block AI-slop comments (restated logic, filler phrases, dead TODOs, commented-out code) before they land in the file.
+  ```
+  npm install -g @code-yeongyu/comment-checker
   ```
 
 ## Agents (`agents/`)

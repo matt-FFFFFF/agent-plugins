@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# One-time nudge: recommend CodeGraph + caveman if either is missing.
-# Neither is required -- every omo skill/agent degrades gracefully without
-# them -- but both meaningfully improve what this plugin can do. Fires at
+# One-time nudge: recommend CodeGraph + caveman + comment-checker if missing.
+# None are required -- every omo skill/agent/hook degrades gracefully without
+# them -- but all three meaningfully improve what this plugin can do. Fires at
 # most once ever per install (marker lives in CLAUDE_PLUGIN_DATA, which
 # survives plugin updates).
 
@@ -15,6 +15,7 @@ touch "$MARKER"
 missing=()
 command -v codegraph >/dev/null 2>&1 || missing+=("codegraph")
 command -v caveman >/dev/null 2>&1 || missing+=("caveman")
+command -v comment-checker >/dev/null 2>&1 || missing+=("comment-checker")
 
 [[ ${#missing[@]} -eq 0 ]] && exit 0
 
@@ -37,5 +38,14 @@ back in your main context, which can cut token usage meaningfully on those workf
 EOF
 fi
 
-echo "(one-time notice from the omo plugin -- it works fine without either; this won't show again)"
+if [[ " ${missing[*]} " == *" comment-checker "* ]]; then
+  cat <<'EOF'
+omo tip: comment-checker isn't installed. A PostToolUse hook in this plugin uses it to
+block AI-slop comments (restated logic, filler phrases, dead TODOs, commented-out code)
+in Write/Edit/MultiEdit before they land, and no-ops silently without it.
+  -> npm install -g @code-yeongyu/comment-checker
+EOF
+fi
+
+echo "(one-time notice from the omo plugin -- it works fine without any of them; this won't show again)"
 exit 0

@@ -1,5 +1,5 @@
 {
-  "description": "One-time SessionStart notice recommending CodeGraph and caveman if either is missing",
+  "description": "One-time SessionStart notice recommending CodeGraph/caveman/comment-checker if missing, plus a PostToolUse guard that blocks AI-slop comments via comment-checker",
   "hooks": {
     "SessionStart": [
       {
@@ -7,6 +7,17 @@
           {
             "type": "command",
             "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/session-start.sh\""
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"${CLAUDE_PLUGIN_ROOT}/hooks/comment-checker.sh\""
           }
         ]
       }
