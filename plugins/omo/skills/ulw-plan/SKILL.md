@@ -22,15 +22,15 @@ A plan is decision-complete when the implementer needs ZERO judgment calls: ever
 ## Phase 0 — Classify size
 
 - **Trivial** (single file, obvious): one or two confirms, then propose.
-- **Standard** (1-5 files, clear feature/refactor): full research + interview/defaults + a `metis` gap-analysis pass.
-- **Architecture** (system design, 5+ modules, long-term impact): deeper research from more angles, external best-practice research via `librarian`, and — for genuinely high-stakes plans — the optional dual review described in Phase 3.
+- **Standard** (1-5 files, clear feature/refactor): full research + interview/defaults + a `omo:metis` gap-analysis pass.
+- **Architecture** (system design, 5+ modules, long-term impact): deeper research from more angles, external best-practice research via `omo:librarian`, and — for genuinely high-stakes plans — the optional dual review described in Phase 3.
 
 ## Phase 1 — Ground (explore before asking)
 
 Eliminate unknowns by discovering facts, not by asking. Before your first question, fan out parallel read-only research and keep working while it runs:
 
-- Fire `Agent({subagent_type: "Explore", ...})` for internal codebase questions (patterns, conventions, existing tests) — several in parallel for genuinely independent angles.
-- Fire `Agent({subagent_type: "librarian", ...})` for external questions (official docs, best practices, how a library actually behaves).
+- Fire `Agent({subagent_type: "omo:Explore", ...})` for internal codebase questions (patterns, conventions, existing tests) — several in parallel for genuinely independent angles.
+- Fire `Agent({subagent_type: "omo:librarian", ...})` for external questions (official docs, best practices, how a library actually behaves).
 - If the repo has a `.codegraph/` directory, use `codegraph_explore` yourself for structural questions before spawning agents for them. If it doesn't but a `codegraph` executable is installed (`command -v codegraph`), run `codegraph init` once to build the index, then use `codegraph_explore` as above. Skip entirely if `codegraph` isn't installed.
 
 Two kinds of unknowns: **discoverable facts** (repo/system/docs truth) become research-and-cite, never a question. **Preferences/tradeoffs** (user intent, not derivable from evidence) are the only things you bring to the user on the CLEAR path, or resolve to a best-practice default on the UNCLEAR path.
@@ -45,7 +45,7 @@ Make ONE judgment and announce it: `Intent: CLEAR — ...` or `Intent: UNCLEAR �
 
 - **Override — explicit ask wins**: if the user explicitly asks to be interviewed ("ask me", "interview me"), route CLEAR and ask every surviving question — don't silently default them.
 - **CLEAR** — the user knows the outcome; the only open items are preferences/tradeoffs the repo can't answer. Ask the surviving forks, each with WHY: name what you explored, why it didn't resolve, and which part of the plan forks on the answer. 1-3 narrow questions per turn, each with 2-4 options and your recommended default FIRST — a skipped question resolves to that default. Always confirm test strategy (TDD / tests-after / none).
-- **UNCLEAR** — the outcome itself is fuzzy (a vague brief, a goal the user can't yet articulate). Do NOT interrogate. For each open decision — including extrinsic axes like budget, mandated stack, expected scale, target audience/compliance — adopt the defensible best-practice default, record it with rationale and reversibility in an "Open assumptions" list, and proceed. The ONLY default escalated to a question is one that's irreversible, destructive, safety-critical, or commits real spend the user never authorized, and research can't settle it. Spawn `Agent({subagent_type: "metis", ...})` to contrarian-self-grill the single highest-leverage adopted assumption — is this constraint real or habitual, does it add complexity the request never asked for — and fold any reframe in as a recommended default, never a forced change.
+- **UNCLEAR** — the outcome itself is fuzzy (a vague brief, a goal the user can't yet articulate). Do NOT interrogate. For each open decision — including extrinsic axes like budget, mandated stack, expected scale, target audience/compliance — adopt the defensible best-practice default, record it with rationale and reversibility in an "Open assumptions" list, and proceed. The ONLY default escalated to a question is one that's irreversible, destructive, safety-critical, or commits real spend the user never authorized, and research can't settle it. Spawn `Agent({subagent_type: "omo:metis", ...})` to contrarian-self-grill the single highest-leverage adopted assumption — is this constraint real or habitual, does it add complexity the request never asked for — and fold any reframe in as a recommended default, never a forced change.
 - **On the fence** — treat as CLEAR and ask exactly ONE question. A user wrongly silenced is worse than one extra question.
 
 **Clearance check** before moving on: objective defined? scope IN/OUT explicit? approach decided? test strategy confirmed? constraints swept (budget/stack/scale/audience — each explored, defaulted, or asked)? no blocking ambiguity left? Any NO is your next question or research pass; all YES → present the approval brief.
@@ -62,7 +62,7 @@ If "should I start now?" would be your only remaining question, you defaulted fo
 
 ## Phase 3 — Generate the plan (only after approval)
 
-1. **`metis` gap analysis (mandatory, even on the CLEAR path)**: spawn `Agent({subagent_type: "metis", ...})` against the drafted plan for contradictions, missing constraints (including unstated extrinsic ones), scope creep, unvalidated assumptions, and missing acceptance criteria. Fold findings in silently — each constraint gap becomes either a proposed default plus reversibility note, or a single owner-question when defaulting is unsafe.
+1. **`metis` gap analysis (mandatory, even on the CLEAR path)**: spawn `Agent({subagent_type: "omo:metis", ...})` against the drafted plan for contradictions, missing constraints (including unstated extrinsic ones), scope creep, unvalidated assumptions, and missing acceptance criteria. Fold findings in silently — each constraint gap becomes either a proposed default plus reversibility note, or a single owner-question when defaulting is unsafe.
 2. Decide the target path: the path the user gave you, or `.claude/plans/<slug>.md` by default. Then scaffold the skeleton (headers verbatim, in this order):
    - **Node or Bun available**: `node scripts/scaffold-plan.mjs <slug>` (or `bun scripts/scaffold-plan.mjs ...`) — defaults to `.claude/plans/<slug>.md`; pass `--output <path>` only when the user gave an explicit path. Idempotent — re-running on an existing plan is a safe no-op, so resuming after a compaction can't clobber checked-off todos. Pass `--reset` to force a fresh skeleton, `--reset --force` if you're deliberately discarding hand edits.
    - **Neither available**: write it yourself, verbatim:
@@ -89,8 +89,8 @@ If "should I start now?" would be your only remaining question, you defaulted fo
 
 Run this when the user asked for it ("high accuracy", "deep review") or intent was UNCLEAR and non-Trivial:
 
-- Spawn `Agent({subagent_type: "momus", ...})` to review the finished plan file.
-- For genuinely high-stakes plans, also spawn `Agent({subagent_type: "oracle", ...})` for an independent second opinion — pass it the plan file path and ask it to review specifically for correctness gaps, not style.
+- Spawn `Agent({subagent_type: "omo:momus", ...})` to review the finished plan file.
+- For genuinely high-stakes plans, also spawn `Agent({subagent_type: "omo:oracle", ...})` for an independent second opinion — pass it the plan file path and ask it to review specifically for correctness gaps, not style.
 - A finding BLOCKS only if it's a real defect: a missing reference, a contradiction, a genuine safety/data-loss/compatibility risk, or an explicit requirement left unmet. Style preferences, "could be more thorough," and speculative future-proofing are non-blocking notes, not blockers.
 - Fix eligible blockers with the smallest edit that resolves them, then re-read the plan fresh and re-submit. Cap at 3 rounds — if still unresolved after that, stop, report the outstanding blockers, and ask the user how to proceed.
 
