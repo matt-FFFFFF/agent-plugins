@@ -1,14 +1,14 @@
 # plugins/omo — PLUGIN KNOWLEDGE BASE
 
 ## OVERVIEW
-The `omo` plugin: 9 subagents + 14 skills + 2 hooks (SessionStart tool nudge, PostToolUse comment-checker guard), adapted from [oh-my-openagent](https://github.com/code-yeongyu/oh-my-openagent) for standalone Claude Code (every file rewritten to drop that framework's `.omo/` state dirs, `task()` categories, and `lsp_*`/`team_*` tools). Parent: [`../../AGENTS.md`](../../AGENTS.md).
+The `omo` plugin: 10 subagents + 14 skills + 2 hooks (SessionStart tool nudge, PostToolUse comment-checker guard), adapted from [oh-my-openagent](https://github.com/code-yeongyu/oh-my-openagent) for standalone Claude Code (every file rewritten to drop that framework's `.omo/` state dirs, `task()` categories, and `lsp_*`/`team_*` tools). Parent: [`../../AGENTS.md`](../../AGENTS.md).
 
 ## STRUCTURE
 ```
 plugins/omo/
 ├── .claude-plugin/plugin.json   # name/version/license — version mirrors root marketplace.json
 ├── LICENSE.md, NOTICE.md        # Sustainable Use License v1.0 + full provenance — READ before editing
-├── agents/                      # 9 flat *.md agent definitions, no subdirs
+├── agents/                      # 10 flat *.md agent definitions, no subdirs
 ├── hooks/hooks.json + session-start.sh   # one-time SessionStart tool nudge (codegraph/caveman/comment-checker)
 │                    + comment-checker.sh # PostToolUse guard: blocks AI-slop comments via comment-checker binary
 └── skills/<name>/SKILL.md [+ references/ + scripts/ + tests/]
@@ -26,7 +26,7 @@ plugins/omo/
 | Codemap-driven refactors | `skills/refactor/SKILL.md` | single-file skill |
 | AI-slop cleanup pass | `skills/remove-ai-slops/SKILL.md` | single-file skill |
 | Explore-first planning before coding | `skills/ulw-plan/SKILL.md` | writes to `.claude/plans/<slug>.md` by default — **not** an `.omo/` state dir like upstream; `scripts/scaffold-plan.mjs` deterministically writes the skeleton when Node/Bun is available, SKILL.md has the same template inline as a fallback; auto-runs `codegraph init` when the executable is present but `.codegraph/` isn't; every implementation todo it writes carries an `Agent: sisyphus\|sisyphus-junior` field |
-| Delegated plan/checklist execution | `skills/start-work/SKILL.md` | delegates each item to `sisyphus` or `sisyphus-junior` per the plan's `Agent` field, batched by dependency; replaces the old `atlas` agent |
+| Plan/checklist execution | `skills/start-work/SKILL.md` (inline) or `agents/atlas.md` (isolated context) | Both fan each item out to `omo:sisyphus`/`omo:sisyphus-junior` per the plan's `Agent` field, batched by dependency, then validate the evidence directly; `atlas` also commits per the plan's `## Commit strategy`. Keep the two in sync |
 | Maximum-saturation research swarm | `skills/ulw-research/SKILL.md` | single-file skill |
 | Structural code search/rewrite (ast-grep) | `skills/ast-grep/AGENTS.md` | vendored pin, "do not fork-drift" |
 | Cross-tool session transcript search | `skills/coding-agent-sessions/AGENTS.md` | first-party Python package, real extension point |
@@ -38,13 +38,13 @@ plugins/omo/
 
 ## CONVENTIONS
 
-**Agent frontmatter** (locked 4-field schema, every one of the 9 files, no exceptions):
+**Agent frontmatter** (locked 4-field schema, every one of the 10 files, no exceptions):
 ```yaml
 ---
 name: oracle
 description: <one paragraph — doubles as router text; compares itself to sibling agents by name>
 tools: Read, Grep, Glob, Bash, WebFetch, WebSearch   # flat comma-separated string, never YAML list
-model: opus   # haiku=pure lookup (explore, librarian) | sonnet=focused bounded-task executor (sisyphus-junior) | opus=judgment (everything else)
+model: opus   # haiku=pure lookup (explore, librarian) | sonnet=focused executor with a plan in hand (atlas, sisyphus-junior) | opus=judgment (everything else)
 ---
 ```
 Read-only agents (`librarian`, `metis`, `momus`, `oracle`) self-declare the constraint in a dedicated body block near the top, not just via the `tools:` list.
@@ -54,12 +54,13 @@ Read-only agents (`librarian`, `metis`, `momus`, `oracle`) self-declare the cons
 **License**: `LICENSE.md` is the **Sustainable Use License v1.0** — free, non-commercial redistribution only, must not remove/obscure notices, modified copies must be marked modified. `NOTICE.md` records exactly what's verbatim-vendored (keeps its own nested `LICENSE`/`ATTRIBUTION.md`) vs. rewritten: `ast-grep`, `frontend`, `ultimate-browsing` carry their own upstream license/attribution files — never delete those when editing.
 
 ## ANTI-PATTERNS (THIS PROJECT)
-- **Never add a `Task`/`Agent`-spawning capability to a file under `agents/`.** The whole roster is deliberately non-recursive/self-contained (`README.md`: "None of these delegate to each other"); real delegation only happens from *skills*, which run with `Agent` tool access. Adding it to an agent file breaks a documented invariant.
+- **Adding `Agent` to an agent's `tools:` is allowed — Claude Code subagents *can* spawn subagents** (nested, up to a depth limit). `prometheus` and `atlas` deliberately do: they carry `Agent` and delegate exactly as their paired skills do. The other 8 agents are kept leaf-only *by choice* (simpler, cheaper, no recursion to reason about), not because the platform forbids it — so if you give another agent `Agent`, update `README.md`'s roster prose and this file rather than assuming it's forbidden.
+- **`prometheus`/`atlas` mirror the `ulw-plan`/`start-work` skills — keep the pairs in sync.** Each agent is the isolated-context form of its skill: the skill is canonical, the agent body only restates the load-bearing invariants plus the deltas ("you run sealed off in your own subagent context", "plugin-qualify every `subagent_type` with `omo:`", and for `atlas` "you own the commits per the plan's commit strategy"). Change one skill's workflow and you update its paired agent in the same commit (and vice versa).
 - **Renaming an agent's `name:` field requires grepping the whole plugin**, not just the agent file — `explore.md`'s `name: Explore` (capitalized, to override Claude Code's built-in) required updating `subagent_type`/`Explore agent` references across 4 skill files plus `NOTICE.md`/`README.md` in the same commit. Also: renaming an already-loaded agent does not hot-reload mid-session — a fresh session is required to pick up the new name.
 - **Don't invent an `.omo/`-style hidden state directory** for a skill (e.g. for `ulw-plan` draft files) — that's upstream oh-my-openagent's multi-runtime resumption machinery; this port deliberately writes plans as real tracked files in the repo instead.
 - **Don't bump `plugins/omo/.claude-plugin/plugin.json`'s version without also bumping the mirrored entry** in `../../.claude-plugin/marketplace.json` — nothing automates the sync.
 
 ## NOTES
 - No CI, no Makefile, no plugin-root test runner — testing lives per-skill (`ast-grep/tests/`, `coding-agent-sessions/scripts/tests/`, `ultimate-browsing/engine/tests/`, `ultimate-browsing/scripts/tests/`), each with its own framework (shell smoke tests, pytest, `unittest`). Don't centralize it.
-- Model-tier cost awareness (from `README.md`): `Explore`/`librarian` are haiku (cheap, fire liberally); `sisyphus-junior` is sonnet; everything else is opus — reach for opus agents only when the task needs real judgment.
+- Model-tier cost awareness (from `README.md`): `Explore`/`librarian` are haiku (cheap, fire liberally); `atlas`/`sisyphus-junior` are sonnet; everything else is opus — reach for opus agents only when the task needs real judgment.
 - This repo mixes runtimes across skills (Python/`uv`, Bash, occasional Bun/Node for `programming`'s TypeScript scripts and `frontend`'s Playwright audit) — don't assume one toolchain plugin-wide; check the specific skill's `AGENTS.md`.
