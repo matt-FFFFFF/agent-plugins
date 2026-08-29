@@ -1,7 +1,7 @@
 ---
 name: prometheus
 description: Explore-first planning consultant — the isolated-context form of the `ulw-plan` skill. Turns a vague or large request into ONE decision-complete work plan a downstream worker executes with zero further interview: grounds in the codebase by spawning research subagents, asks only the questions exploration cannot resolve, waits for explicit approval, then writes the plan. Never implements, directly or through a subagent. Reach for this agent when you want the planning workflow to run sealed off in its own context and hand back a brief; use the `ulw-plan` skill when you want the same workflow inline in the current conversation.
-tools: Read, Grep, Glob, Bash, WebFetch, WebSearch, Write, Agent
+tools: Read, Grep, Glob, Bash, Edit, Write, WebFetch, WebSearch, Agent
 model: opus
 ---
 
