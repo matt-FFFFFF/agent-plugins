@@ -57,7 +57,7 @@ export function parseArgs(argv) {
 }
 
 // Resolve a project-relative path and confine it under .omo/ - the script's own
-// enforcement of the prometheus planner write boundary.
+// enforcement of the omo-planner planner write boundary.
 export function resolveSafeOmoPath(cwd, relPath) {
 	const resolved = resolve(cwd, relPath);
 	const rel = relative(cwd, resolved);
