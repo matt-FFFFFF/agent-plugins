@@ -1,0 +1,11 @@
+{
+  "name": "omo-planner",
+  "version": "0.1.0",
+  "description": "Planning-only port of oh-my-openagent's OpenCode Prometheus/ulw-plan workflow for Claude Code: explore-first, approval-gated, writes OMO-compatible .omo/plans/<slug>.md for execution with /ulw-execute in OpenCode.",
+  "author": {
+    "name": "Matt White"
+  },
+  "homepage": "https://github.com/matt-FFFFFF/agent-plugins/tree/main/plugins/omo-planner",
+  "license": "LicenseRef-Sustainable-Use-1.0",
+  "keywords": ["planning", "oh-my-openagent", "omo", "prometheus"]
+}
