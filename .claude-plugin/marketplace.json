@@ -1,16 +1,16 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "matt-FFFFFF",
-  "description": "A single-plugin marketplace bundling a roster of Claude Code subagents and skills adapted from oh-my-openagent.",
+  "description": "A Claude Code plugin marketplace. omo-planner: a planning-only port of oh-my-openagent's Prometheus/ulw-plan workflow that writes OMO-compatible .omo plans.",
   "owner": {
     "name": "Matt White"
   },
   "plugins": [
     {
-      "name": "omo",
-      "description": "10 subagents (sisyphus, sisyphus-junior, hephaestus, prometheus, atlas, explore, librarian, metis, momus, oracle) and 14 skills adapted for Claude Code from oh-my-openagent.",
-      "version": "0.4.0",
-      "source": "./plugins/omo",
+      "name": "omo-planner",
+      "description": "Planning-only port of oh-my-openagent's OpenCode Prometheus/ulw-plan workflow: explore-first, approval-gated, writes .omo/plans/<slug>.md for /ulw-execute in OpenCode.",
+      "version": "0.1.0",
+      "source": "./plugins/omo-planner",
       "category": "development"
     }
   ]
