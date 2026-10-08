@@ -28,9 +28,7 @@ after(() => {
 const argv = (...a) => ["node", "scaffold-plan.mjs", ...a];
 
 test("parseArgs accepts <slug> --clear --draft-only --review-required", () => {
-	// Given / When
 	const r = parseArgs(argv("demo", "--clear", "--draft-only", "--review-required"));
-	// Then
 	assert.deepEqual(r, {
 		slug: "demo",
 		intent: "clear",
@@ -149,13 +147,13 @@ test("skeleton and draft carry no execution-harness text", () => {
 
 test("CLI: valid run prints created line; Bad_Slug exits 1 with invalid slug", () => {
 	const t = tmp();
-	const ok = spawnSync("node", [SCRIPT, "demo", "--clear", "--draft-only"], { cwd: t, encoding: "utf8" });
+	const ok = spawnSync(process.execPath, [SCRIPT, "demo", "--clear", "--draft-only"], { cwd: t, encoding: "utf8" });
 	assert.equal(ok.status, 0);
 	assert.match(ok.stdout, /created: \.omo\/drafts\/demo\.md/);
-	const bad = spawnSync("node", [SCRIPT, "Bad_Slug"], { cwd: t, encoding: "utf8" });
+	const bad = spawnSync(process.execPath, [SCRIPT, "Bad_Slug"], { cwd: t, encoding: "utf8" });
 	assert.equal(bad.status, 1);
 	assert.match(bad.stderr, /invalid slug/);
-	const flag = spawnSync("node", [SCRIPT, "demo", "--x"], { cwd: t, encoding: "utf8" });
+	const flag = spawnSync(process.execPath, [SCRIPT, "demo", "--x"], { cwd: t, encoding: "utf8" });
 	assert.equal(flag.status, 1);
 	assert.match(flag.stderr, /unknown flag/);
 });

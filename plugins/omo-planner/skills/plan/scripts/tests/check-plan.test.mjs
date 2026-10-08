@@ -128,7 +128,6 @@ for (const [condition, mutate] of [
   assert.deepEqual(errors, []);
 });
 for (const text of ["", "garbage", "\u0000\ufffd"]) test(`rejects malformed input when ${JSON.stringify(text)}`, () => {
-  // Given: malformed text
   // When
   const { errors } = checkPlanText(text);
   // Then
@@ -225,7 +224,7 @@ for (const key of ["ino", "size", "mtimeMs"]) test(`returns INCONCLUSIVE when ${
   const status = main([".omo/plans/demo.md", "--digest"], io);
   // Then
   assert.equal(status, 2);
-  assert.deepEqual(messages, ["INCONCLUSIVE: changed during read"]);
+  assert.deepEqual(messages, ["INCONCLUSIVE: .omo/plans/demo.md changed during read; re-run when no other process is writing it"]);
 });
 test("reads bytes exactly once when file is stable", () => {
   // Given
